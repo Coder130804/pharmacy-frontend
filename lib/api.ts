@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/medicines";
+// ✅ Render backend base URL
+const API_BASE_URL = "https://pharmacy-backend-q2x4.onrender.com/api";
 
 export interface Medicine {
   id: number;
@@ -14,31 +15,31 @@ export type MedicineInput = Omit<Medicine, "id">;
 
 export const api = {
   getMedicines: async (): Promise<Medicine[]> => {
-    const response = await axios.get<Medicine[]>(API_BASE_URL);
+    const response = await axios.get<Medicine[]>(`${API_BASE_URL}/medicines`);
     return response.data;
   },
 
   getMedicine: async (id: number): Promise<Medicine> => {
-    const response = await axios.get<Medicine>(`${API_BASE_URL}/${id}`);
+    const response = await axios.get<Medicine>(`${API_BASE_URL}/medicines/${id}`);
     return response.data;
   },
 
   addMedicine: async (medicine: MedicineInput): Promise<Medicine> => {
-    const response = await axios.post<Medicine>(API_BASE_URL, medicine);
+    const response = await axios.post<Medicine>(`${API_BASE_URL}/medicines`, medicine);
     return response.data;
   },
 
   updateMedicine: async (id: number, medicine: MedicineInput): Promise<Medicine> => {
-    const response = await axios.put<Medicine>(`${API_BASE_URL}/${id}`, medicine);
+    const response = await axios.put<Medicine>(`${API_BASE_URL}/medicines/${id}`, medicine);
     return response.data;
   },
 
   deleteMedicine: async (id: number): Promise<void> => {
-    await axios.delete(`${API_BASE_URL}/${id}`);
+    await axios.delete(`${API_BASE_URL}/medicines/${id}`);
   },
 
   getReportsSummary: async () => {
-    const res = await fetch("http://localhost:8080/api/reports/summary");
+    const res = await fetch(`${API_BASE_URL}/reports/summary`);
     if (!res.ok) throw new Error("Failed to fetch reports");
     return res.json();
   },
