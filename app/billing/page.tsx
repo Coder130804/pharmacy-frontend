@@ -36,7 +36,6 @@ export default function BillingPage() {
 
     const exists = billItems.find((item) => item.medicine.id === med.id);
 
-    // ✅ If already exists → increase quantity
     if (exists) {
       const updatedQty = exists.quantity + quantity;
 
@@ -56,7 +55,6 @@ export default function BillingPage() {
       return;
     }
 
-    // ✅ New item stock check
     if (quantity > med.quantity) {
       setWarning(`⚠ Only ${med.quantity} available. Adjusted automatically.`);
       setTimeout(() => setWarning(null), 3000);
@@ -102,23 +100,18 @@ export default function BillingPage() {
     0
   );
 
-  const BASE_URL =
-    "https://pharmacy-backend-q2x4.onrender.com";
-
   const handlePrint = () => {
-  if (billItems.length === 0) {
-    alert("No medicines added to bill");
-    return;
-  }
+    if (billItems.length === 0) {
+      alert("No medicines added to bill");
+      return;
+    }
 
-  // directly open print dialog
-  window.print();
+    window.print();
 
-  // optional cleanup after printing
-  setTimeout(() => {
-    setBillItems([]);
-  }, 500);
-};
+    setTimeout(() => {
+      setBillItems([]);
+    }, 500);
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -147,7 +140,7 @@ export default function BillingPage() {
             )}
 
             <select
-              className="border p-2 rounded w-[200px]"
+              className="border p-2 rounded w-[220px]"
               onChange={(e) =>
                 setSelectedMedId(Number(e.target.value))
               }
@@ -195,19 +188,18 @@ export default function BillingPage() {
                 {new Date().toLocaleDateString()}
               </p>
               <p>
-                <strong>Invoice:</strong>{" "}
-                {Date.now()}
+                <strong>Invoice:</strong> {Date.now()}
               </p>
             </div>
 
-            <table className="w-full border text-sm">
+            <table className="w-full border text-sm border-collapse">
               <thead>
                 <tr className="bg-primary text-white">
-                  <th className="p-2">Name</th>
-                  <th className="p-2">Price</th>
-                  <th className="p-2">Qty</th>
-                  <th className="p-2">Total</th>
-                  <th className="p-2 print:hidden">
+                  <th className="p-2 text-left w-[40%]">Name</th>
+                  <th className="p-2 text-right w-[15%]">Price</th>
+                  <th className="p-2 text-center w-[10%]">Qty</th>
+                  <th className="p-2 text-right w-[20%]">Total</th>
+                  <th className="p-2 text-center w-[15%] print:hidden">
                     Actions
                   </th>
                 </tr>
@@ -215,37 +207,45 @@ export default function BillingPage() {
 
               <tbody>
                 {billItems.map((item) => (
-                  <tr key={item.medicine.id}>
-                    <td className="p-2">
+                  <tr
+                    key={item.medicine.id}
+                    className="border-t"
+                  >
+                    <td className="p-2 text-left">
                       {item.medicine.name}
                     </td>
-                    <td className="p-2">
+
+                    <td className="p-2 text-right">
                       ₹{item.medicine.price}
                     </td>
-                    <td className="p-2">
+
+                    <td className="p-2 text-center">
                       {item.quantity}
                     </td>
-                    <td className="p-2">
+
+                    <td className="p-2 text-right">
                       ₹
                       {item.medicine.price *
                         item.quantity}
                     </td>
 
-                    <td className="p-2 print:hidden">
-                      <button
-                        onClick={() =>
-                          handleEdit(item.medicine.id)
-                        }
-                      >
-                        <Pencil className="w-4 h-4 mr-2" />
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleDelete(item.medicine.id)
-                        }
-                      >
-                        <Trash2 className="w-4 h-4 text-red-500" />
-                      </button>
+                    <td className="p-2 text-center print:hidden">
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() =>
+                            handleEdit(item.medicine.id)
+                          }
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleDelete(item.medicine.id)
+                          }
+                        >
+                          <Trash2 className="w-4 h-4 text-red-500" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
