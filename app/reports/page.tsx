@@ -65,7 +65,7 @@ export default function ReportsPage() {
           <div>
             <h1 className="text-xl font-semibold">Reports Dashboard</h1>
             <p className="text-sm text-muted-foreground">
-              Mock analytics (backend disconnected)
+              Smart sales insights, stock control, and inventory tracking
             </p>
           </div>
         </div>
