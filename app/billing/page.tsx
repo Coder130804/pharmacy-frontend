@@ -75,35 +75,40 @@ setTimeout(() => setWarning(null), 4000);
     0
   );
 
-  const handlePrint = async () => {
-    if (billItems.length === 0) {
-      alert("No medicines added to bill");
-      return;
-    }
+  const BASE_URL = "https://pharmacy-backend-q2x4.onrender.com";
 
-    try {
-      await fetch("http://localhost:8080/api/bills", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          items: billItems.map((item) => ({
-            medicineId: item.medicine.id,
-            quantity: item.quantity,
-          })),
-          total,
-        }),
-      });
+const handlePrint = async () => {
+  if (billItems.length === 0) {
+    alert("No medicines added to bill");
+    return;
+  }
 
-      window.print();
-      setBillItems([]);
-      api.getMedicines().then(setMedicines);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to save bill");
-    }
-  };
+  try {
+    const res = await fetch(`${BASE_URL}/api/bills`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items: billItems.map((item) => ({
+          medicineId: item.medicine.id,
+          quantity: item.quantity,
+        })),
+        total,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Failed");
+
+    window.print();
+    setBillItems([]);
+    api.getMedicines().then(setMedicines);
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to save bill");
+  }
+};
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
