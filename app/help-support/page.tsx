@@ -66,7 +66,7 @@ export default function HelpSupportPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-lg font-semibold text-primary">+1 (800) 123-4567</p>
+              <p className="text-lg font-semibold text-primary">+91 98765 43210</p>
               <p className="text-sm text-muted-foreground mt-1">Mon - Fri, 9:00 AM - 6:00 PM</p>
             </CardContent>
           </Card>
