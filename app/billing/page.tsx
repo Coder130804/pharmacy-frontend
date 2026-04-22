@@ -105,46 +105,20 @@ export default function BillingPage() {
   const BASE_URL =
     "https://pharmacy-backend-q2x4.onrender.com";
 
-  const handlePrint = async () => {
-    if (billItems.length === 0) {
-      alert("No medicines added to bill");
-      return;
-    }
+  const handlePrint = () => {
+  if (billItems.length === 0) {
+    alert("No medicines added to bill");
+    return;
+  }
 
-    try {
-      setPrinting(true);
+  // directly open print dialog
+  window.print();
 
-      const res = await fetch(`${BASE_URL}/api/bills`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          items: billItems.map((item) => ({
-            medicineId: item.medicine.id,
-            quantity: item.quantity,
-          })),
-          total,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed");
-
-      window.print();
-
-      // Clear after slight delay (better UX)
-      setTimeout(() => {
-        setBillItems([]);
-        api.getMedicines().then(setMedicines);
-      }, 500);
-
-    } catch (err) {
-      console.error(err);
-      alert("Failed to save bill");
-    } finally {
-      setPrinting(false);
-    }
-  };
+  // optional cleanup after printing
+  setTimeout(() => {
+    setBillItems([]);
+  }, 500);
+};
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
